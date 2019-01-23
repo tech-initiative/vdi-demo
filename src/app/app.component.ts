@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AuthService } from './auth/auth.service';
+import { Router, NavigationStart, NavigationCancel, NavigationEnd } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'vdi-demo';
+
+  public title: string = 'Associate Manager';
+  public loading: boolean = true;
+  public isLoggedIn$: Observable<boolean>;
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.loading = true;
+  }
+
+  ngAfterViewInit() {
+    this.router.events
+        .subscribe((event) => {
+          if (event instanceof NavigationStart) {
+            this.loading = true;
+          } else if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
+            this.loading = false;
+          }
+        })
+  }
 }

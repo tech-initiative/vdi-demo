@@ -1,0 +1,42 @@
+<div class="inner_content">
+  <div class="inner_content_w3_agile_info">
+    <div class="registration admin_agile">								
+      <div class="signin-form profile admin">
+        <h2>Log in to your account</h2>
+        <div class="login-form">
+          <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm();">
+            <!-- Email input -->
+            <input type="text" placeholder="Email"  
+                [ngClass]="{'input-text-err': isInvalid('email')}" formControlName="email" 
+                #email 
+            />
+            <div *ngIf="isInvalid('email')">
+              <span class="text-danger" *ngIf="loginForm.controls['email'].errors?.required">Email is required</span>
+              <span class="text-danger" *ngIf="loginForm.controls['email'].errors?.email">Invalid email format</span>
+            </div>
+
+            <!-- Password input -->
+            <input type="password" placeholder="Password" 
+                [ngClass]="{'input-text-err': isInvalid('password')}" formControlName="password"  #password 
+            />
+            
+            <input id="as_admin" type="checkbox" formControlName="is_admin"  #is_admin 
+            /> <label class="ml-10" for="as_admin">Login as admin?</label>
+
+            <div *ngIf="isInvalid('password')">
+              <span class="text-danger" *ngIf="loginForm.controls['password'].errors?.required">Password is required</span>
+            </div>
+            <div *ngIf="invalidAttempt">
+              <span class="text-danger">Invalid login credentials</span>
+            </div>            
+            <div class="tp">
+              <input type="submit" value="LOGIN" 
+                  [disabled]="btnDisabled || loginForm.pristine || loginForm.invalid"
+              />
+            </div>          
+          </form>
+        </div>      
+      </div>
+    </div>
+  </div>
+</div>   
