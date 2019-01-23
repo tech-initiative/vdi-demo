@@ -18,6 +18,10 @@ export class AppComponent {
     this.loading = true;
   }
 
+  ngOnInit() {
+    this.isLoggedIn$ = this.authService.isLoggedIn;
+  }
+
   ngAfterViewInit() {
     this.router.events
         .subscribe((event) => {
