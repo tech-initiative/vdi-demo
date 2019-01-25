@@ -23,12 +23,13 @@ export class AuthService {
             console.log('Login response:', resp);
             if (resp.status == 1) {
               localStorage.setItem(AppSettings.USER_LOCAL_STORAGE_KEY, resp.data.token);
+              this.loggedIn.next(true);
             } else {
               // console.log('Failed');
             }
           }
-        )
-      )
+        )       
+      );
   }
 
   /* Check if user token exists */
@@ -41,4 +42,9 @@ export class AuthService {
     return this.loggedIn.asObservable();
   }
 
+  /* User logout function */
+  public userLogout() {
+    localStorage.removeItem(AppSettings.USER_LOCAL_STORAGE_KEY);
+    this.loggedIn.next(false);
+  }
 }

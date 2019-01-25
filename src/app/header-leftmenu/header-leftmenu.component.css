@@ -1,0 +1,10 @@
+#admin-logo {
+    float: left;
+}
+.user-dp {
+    display: block;
+    float: left;
+    height: 100%;
+    border-right: 1px solid #1372bf;
+    text-align: center;
+}

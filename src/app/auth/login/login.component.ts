@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,8 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) { 
     this.createForm();
+    console.dir(Swal);
+    // Swal.fire('Hello world!');
   }
 
   ngOnInit() {
@@ -56,7 +59,8 @@ export class LoginComponent implements OnInit {
             if (this.loginForm.value.is_admin) {
               this.router.navigate(['/admin/dashboard'])
             } else {
-              this.router.navigate(['/user/dashboard'])
+              // this.router.navigate(['/user/dashboard'])
+              // Swal.fire('Error!', 'User login is under maintenance. Try admin login instead.', 'error')
             }            
           }
         });

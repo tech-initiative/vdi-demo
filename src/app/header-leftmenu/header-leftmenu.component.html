@@ -1,7 +1,7 @@
 <div class="w3_agileits_top_nav">
   <ul id="gn-menu" class="gn-menu-main">
     <!-- Left menu bar starts -->
-    <li class="gn-trigger">
+    <li class="gn-trigger hide" [ngClass]="{'show ': appComponent.isLoggedIn$ | async}">
       <a class="gn-icon gn-icon-menu" href="javascript:void(0)"><i class="fa fa-bars" aria-hidden="true"></i><span>Menu</span></a>
       <nav class="gn-menu-wrapper">
         <div class="gn-scroller scrollbar1">
@@ -12,10 +12,10 @@
               </a>
             </li>
             <li>
-                <a routerLink="/users"> 
-                  <i class="fa fa-users"></i> Users
-                </a>
-              </li>
+              <a routerLink="/users"> 
+                <i class="fa fa-users"></i> Users
+              </a>
+            </li>
             <!-- <li>
               <a href="#">
                 <i class="fa fa-users" aria-hidden="true"></i> Users 
@@ -36,12 +36,28 @@
     </li>
     <!-- Left menu bar ends -->
     <!-- Header section -->
-    <li class="second logo admin" style="float:left">
+    <li class="second logo admin" id="admin-logo">
       <h1>
         <a href="main-page.html">
           <i class="fa fa-graduation-cap" aria-hidden="true"></i>{{ site_heading }}  
         </a>
       </h1>
+    </li>
+    <!-- User settings, logout options -->
+    <li class="second admin-pic" id="user-dp" *ngIf="appComponent.isLoggedIn$ | async">
+      <ul class="top_dp_agile">
+         <li class="dropdown profile_details_drop">
+           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+             <div class="profile_img">	
+               <span class="prfil-img"><img src="assets/images/admin.jpg" alt="" style="width:50px;"> </span> 
+             </div>	
+           </a>
+           <ul class="dropdown-menu drp-mnu pull-left">
+             <li class="disabled"> <a href="javascript:void(0);" ><i class="fa fa-cog"></i> Settings</a> </li> 
+             <li> <a (click)="logout();"><i class="fa fa-sign-out"></i> Logout</a> </li>
+           </ul>
+         </li>        
+      </ul>
     </li>
     <!-- <li class="second w3l_search admin_login" style="border-left:0;">				 
         <form action="#" method="post">

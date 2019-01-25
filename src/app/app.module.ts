@@ -4,8 +4,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './auth/auth.service';
 import { AppComponent } from './app.component';
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderLeftmenuComponent } from './header-leftmenu/header-leftmenu.component';
+import { AuthGuard } from './auth/auth.guard';
+import { AfterLoginGuard } from './auth/after-login.guard';
+import { HttpErrorInterceptor } from './http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,13 @@ import { HeaderLeftmenuComponent } from './header-leftmenu/header-leftmenu.compo
     HttpClientModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    },
+    AuthGuard,
+    AfterLoginGuard,
     {provide: APP_BASE_HREF, useValue: '/'},
     AuthService
   ],
