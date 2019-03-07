@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) { 
     this.createForm();
-    // console.dir(Swal);
+    console.dir(Swal);
     // Swal.fire('Hello world!');
   }
 
