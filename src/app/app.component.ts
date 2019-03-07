@@ -13,6 +13,7 @@ export class AppComponent {
   public title: string = 'Associate Manager';
   public loading: boolean = true;
   public isLoggedIn$: Observable<boolean>;
+  public userDetails$: Observable<any>;
 
   constructor(private router: Router, private authService: AuthService) {
     this.loading = true;
@@ -20,6 +21,9 @@ export class AppComponent {
 
   ngOnInit() {
     this.isLoggedIn$ = this.authService.isLoggedIn;
+    this.userDetails$ = this.authService.userDetails();
+
+    console.log("User details:", this.userDetails$);
   }
 
   ngAfterViewInit() {

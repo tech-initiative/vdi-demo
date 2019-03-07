@@ -11,8 +11,12 @@ const appRoutes: Routes = [
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule'
   },
+  {
+    path: 'user',
+    loadChildren: './user/user.module#UserModule'
+  },
   { 
-    path: '', 
+    path: '**', 
     redirectTo: 'login', 
     pathMatch: 'full' 
   },
@@ -20,7 +24,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes, {useHash: true})
   ],
   exports: [RouterModule]
 })

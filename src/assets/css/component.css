@@ -34,7 +34,7 @@ ul.gn-menu.agile_menu_drop{
 }
 .w3_agileits_top_nav {
  
-    background: #007ee5;
+	background-image: linear-gradient(#13a6ad, #275773);
     color: #fff;
     top: 0;
     left: 0;
@@ -63,7 +63,7 @@ ul.gn-menu.agile_menu_drop{
 		display: block;
 		float: left;
 		height: 100%;
-		    border-right: 1px solid #1372bf;
+		border-right: 1px solid #3c9aa7;
 		text-align: center;
 }
 ul.gn-submenu li a {
@@ -96,7 +96,7 @@ ul.gn-menu.agile_menu_drop {
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
-    background: #e53238;
+	background-image: linear-gradient(#13a6ad, #275773);
     color: #fff;
     padding: 5px 8px 0 0;
     font-size: 2.5em;
@@ -109,7 +109,7 @@ ul.gn-menu.agile_menu_drop {
 }
 .gn-menu-main > li:last-child {
 		float: right;
-		border-left: 1px solid #1372bf;
+		border-left: 1px solid #3c9aa7;
 }
 
 .gn-menu-main > li > a {
@@ -346,7 +346,7 @@ ul.gn-submenu i.fa::before{
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
-		background: #e53238;
+		background-image: linear-gradient(#0dcbd4, #3e88b3);
 		color: #fff;
 		padding: 5px 4px 0 0;
 		font-size: 2.5em;

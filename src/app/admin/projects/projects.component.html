@@ -1,0 +1,75 @@
+<div class="inner_content">
+  <div class="inner_content_w3_agile_info two_in">
+    <h2 class="w3_inner_tittle">Tables</h2>
+    <div class="agile-tables">
+      <div class="w3l-table-info agile_info_shadow">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 class="w3_inner_tittle two">All Projects</h3>
+            <table class="table table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                  <th width="15%">Project</th>
+                  <th width="15%">Account</th>
+                  <th width="5%">Status</th>
+                  <th width="35%">Project Manager</th>
+                  <th width="30%" class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let project of projects">
+                  <td>{{ project.name }}</td>
+                  <td>{{ project.account.name }}</td>
+                  <td class="text-center">
+                    <i class="fa fa-circle text-success" *ngIf="project.status"></i>
+                    <i class="fa fa-circle text-danger" *ngIf="!project.status"></i> 
+                  </td>
+                  <td>
+                    <span *ngFor="let pm of project.project_manager; let isLast = last;">
+                     {{pm.first_name}} {{pm.last_name}}{{isLast ? '' : ' | '}}
+                    </span>
+                  </td>
+                  <td class="actions text-center">
+                    <a class="btn btn-default btn-xs">
+                      <i class="fa fa-pencil"></i> Edit
+                    </a>&nbsp;
+                    <a class="btn btn-default btn-xs">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>&nbsp;
+                    <a class="btn btn-default btn-xs">
+                      <i class="fa fa-list"></i> Snap
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-4">
+            <h3 class="w3_inner_tittle two">Add New Project</h3>
+            <!--<form>-->
+            <div class="form-group">
+              <label class="">Project Name</label>
+              <input class="form-control" placeholder="Project Name" />
+            </div>
+            <div class="form-group">
+              <label class="control-label">Select Account</label>
+              <select class="form-control">
+                <option>Account 1</option>
+                <option>Account 2</option>
+                <option>Account 3</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Status</label>
+              <select class="form-control">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <!--</form>-->
+          </div>
+        </div>       
+      </div>
+    </div>
+  </div>
+</div>
