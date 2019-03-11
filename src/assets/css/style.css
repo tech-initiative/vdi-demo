@@ -2440,6 +2440,16 @@ li.second.logo.admin {
 	padding:1px 4px;
 }
 
+#swal2-content {
+	font-size: 14px;
+}
+
+ul.dropdown-menu li.user-drp {
+	margin: 10px 0 0px 0px;
+    color: #007ee5;
+    font-weight: 500;
+}
+
 /*--Responsive--*/
 @media (max-width:1440px){
 	.registration.admin_agile {

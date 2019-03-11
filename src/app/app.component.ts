@@ -13,17 +13,15 @@ export class AppComponent {
   public title: string = 'Associate Manager';
   public loading: boolean = true;
   public isLoggedIn$: Observable<boolean>;
-  public userDetails$: Observable<any>;
+  public userInfo$: Observable<any>;
 
   constructor(private router: Router, private authService: AuthService) {
     this.loading = true;
   }
 
   ngOnInit() {
-    this.isLoggedIn$ = this.authService.isLoggedIn;
-    this.userDetails$ = this.authService.userDetails();
-
-    console.log("User details:", this.userDetails$);
+    this.isLoggedIn$  = this.authService.isLoggedIn;
+    this.userInfo$    = this.authService.userDetailsObs;
   }
 
   ngAfterViewInit() {

@@ -3,6 +3,7 @@ import { AppSettings } from '../app.settings';
 import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header-leftmenu',
@@ -26,6 +27,12 @@ export class HeaderLeftmenuComponent implements OnInit {
   logout() {
     this.authService.userLogout();
     this.router.navigate(['/login']);
+    swal({
+      title: "Logout successful!",
+      text: "Enter credentials below to sign back in.",
+      type: 'success',
+      showConfirmButton: true 
+    });
   }
 
 }

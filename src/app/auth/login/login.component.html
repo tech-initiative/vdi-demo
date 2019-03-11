@@ -5,14 +5,13 @@
         <h2>Log in to your account</h2>
         <div class="login-form">
           <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm();">
-            <!-- Email input -->
-            <input type="text" placeholder="Email"  
-                [ngClass]="{'input-text-err': isInvalid('email')}" formControlName="email" 
-                #email 
+            <!-- TCS Employee ID input -->
+            <input type="text" placeholder="Tcs Employee Id"  
+                [ngClass]="{'input-text-err': isInvalid('tcs_employee_id')}" formControlName="tcs_employee_id" 
+                #tcs_employee_id 
             />
-            <div *ngIf="isInvalid('email')">
-              <span class="text-danger" *ngIf="loginForm.controls['email'].errors?.required">Email is required</span>
-              <span class="text-danger" *ngIf="loginForm.controls['email'].errors?.email">Invalid email format</span>
+            <div *ngIf="isInvalid('tcs_employee_id')">
+              <span class="text-danger" *ngIf="loginForm.controls['tcs_employee_id'].errors?.required">TCS Employee ID is required</span>
             </div>
 
             <!-- Password input -->
@@ -20,7 +19,7 @@
                 [ngClass]="{'input-text-err': isInvalid('password')}" formControlName="password"  #password 
             />
             
-            <input id="as_admin" type="checkbox" formControlName="is_admin"  #is_admin 
+            <input id="as_admin" type="checkbox" formControlName="isAdmin"  #isAdmin 
             /> <label class="ml-10" for="as_admin">Login as admin?</label>
 
             <div *ngIf="isInvalid('password')">

@@ -6,10 +6,9 @@
       <nav class="gn-menu-wrapper">
         <div class="gn-scroller scrollbar1">
           <ul class="gn-menu agile_menu_drop">
-            
-            <ng-container *ngIf="(appComponent.userDetails$ | async) as userDet">
+            <ng-container *ngIf="(appComponent.userInfo$ | async) as userDet">
                 <!-- Admin menu list starts -->
-                <ng-container *ngIf="userDet.is_admin">
+                <ng-container *ngIf="userDet.isAdmin">
                   <!-- <li>
                     <a routerLink=""> 
                       <i class="fa fa-tachometer"></i> Dashboard
@@ -28,7 +27,7 @@
                 </ng-container>
                 <!-- Admin menu list ends -->
                 <!-- Front user menu list starts --> 
-                <ng-container *ngIf="!userDet.is_admin">
+                <ng-container *ngIf="!userDet.isAdmin">
                   <li>
                     <a routerLink=""> 
                       <i class="fa fa-tachometer"></i> Dashboard
@@ -71,7 +70,7 @@
       </h1>
     </li>
     <!-- User settings, logout options -->
-    <li class="second admin-pic" id="user-dp" *ngIf="appComponent.isLoggedIn$ | async">
+    <li class="second admin-pic" id="user-dp" *ngIf="(appComponent.userInfo$ | async) as userDet">
       <ul class="top_dp_agile">
          <li class="dropdown profile_details_drop">
            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -80,8 +79,13 @@
              </div>	
            </a>
            <ul class="dropdown-menu drp-mnu pull-left">
-             <li class="disabled"> <a href="javascript:void(0);" ><i class="fa fa-cog"></i> Settings</a> </li> 
-             <li> <a (click)="logout();"><i class="fa fa-sign-out"></i> Logout</a> </li>
+              <li class="user-drp text-center"> 
+                {{userDet.firstName}} {{userDet.lastName}}
+                ({{userDet.tcsEmployeeId}})
+              </li>
+              <li role="separator" class="divider"></li>
+              <li class="disabled"> <a href="javascript:void(0);" ><i class="fa fa-cog"></i> Settings</a> </li> 
+              <li> <a (click)="logout();"><i class="fa fa-sign-out"></i> Logout</a> </li>
            </ul>
          </li>        
       </ul>

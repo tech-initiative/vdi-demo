@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -20,9 +19,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService, 
     private router: Router
   ) { 
-    this.createForm();
-    console.dir(Swal);
-    // Swal.fire('Hello world!');
+    this.createForm();    
   }
 
   ngOnInit() {
@@ -31,9 +28,9 @@ export class LoginComponent implements OnInit {
   /* Create Login form - initialize form builder object */
   createForm() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      tcs_employee_id: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      is_admin: [false]
+      isAdmin: [false]
     });
   }
 
@@ -49,21 +46,21 @@ export class LoginComponent implements OnInit {
     this.authService
         .userLogin(this.loginForm.value)
         .subscribe(resp => {
-          if (resp.status == 0) {
+          if (resp == null) {      
             this.invalidAttempt = true;
-          } else if (resp.status == 1) {
+          } else if (resp['id']) {
             this.invalidAttempt = false;
             /** 
-             * If is_admin is true, redirect to admin dashboard. 
+             * If isAdmin is true, redirect to admin dashboard. 
              * Otherwise, redirect to user dashboard */
-            if (this.loginForm.value.is_admin) {
-              this.router.navigate(['/admin/dashboard'])
+            if (this.loginForm.value.isAdmin) {
+              this.router.navigate(['/admin/dashboard']);
             } else {
-              this.router.navigate(['/user/dashboard'])
-              // Swal.fire('Error!', 'User login is under maintenance. Try admin login instead.', 'error')
-            }            
+              this.router.navigate(['/user/dashboard']);
+            }
           }
-        });
+        })
+        ;
 
   }
 }
