@@ -9,6 +9,7 @@ import { HeaderLeftmenuComponent } from './header-leftmenu/header-leftmenu.compo
 import { AuthGuard } from './auth/auth.guard';
 import { AfterLoginGuard } from './auth/after-login.guard';
 import { HttpErrorInterceptor } from './http-error.interceptor';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HttpErrorInterceptor } from './http-error.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ModalModule.forRoot()
   ],
   providers: [
     {

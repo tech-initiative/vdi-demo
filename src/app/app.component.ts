@@ -3,6 +3,8 @@ import { AuthService } from './auth/auth.service';
 import { Router, NavigationStart, NavigationCancel, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import * as $ from 'jquery';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,6 +34,10 @@ export class AppComponent {
           } else if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
             this.loading = false;
           }
-        })
+        });
+
+      $('.agile_menu_drop a').on('click', function() {
+        $('body').click();
+      });
   }
 }

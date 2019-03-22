@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ProjectsService } from './projects.service';
+import swal from 'sweetalert2';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-projects',
@@ -8,94 +11,118 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class ProjectsComponent implements OnInit {
 
-  public all_accounts;
-  public projects;
+  public all_accounts: any;
+  public projects: any;
 
-  constructor() { }
+  public btnDisabled: boolean = false;
+  public invalidAttempt: boolean = false;
+  public addForm: FormGroup;
+  public editForm: FormGroup;
+  modalRef: BsModalRef;
+
+  constructor(
+    private projectService: ProjectsService, 
+    private fb: FormBuilder,
+    private modalService: BsModalService
+  ) {}
 
   ngOnInit() {
 
-    let res = {
-      status: 1,
-      data: {
-        all_accounts: [
-          {
-            id: 1,
-            name: "Account 1"
-          },
-          {
-            id: 2,
-            name: "Account 2"
-          },
-          {
-            id: 3,
-            name: "Account 3"
-          }
-        ],
-        projects:[
-          {
-            id: "1",
-            name: "Jasper",
-            is_active: 1,
-            account: {
-              id: 1,
-              name: "Account 1"
-            },
-            project_manager: [
-              {
-                first_name: "Manager 2a",
-                last_name: "Last 2a"
-              },
-              {
-                first_name: "Manager 2b",
-                last_name: "Last 2b"
-              }
-            ] 
-          },
-          {
-            id: "2",
-            name: "Project 2",
-            is_active: 1,
-            account: {
-              id: 2,
-              name: "Account 2"
-            },
-            project_manager: [
-              {
-                first_name: "Manager 2a",
-                last_name: "Last 2a"
-              },
-              {
-                first_name: "Manager 2b",
-                last_name: "Last 2b"
-              }
-            ]
-          },
-          {
-            id: "3",
-            name: "Project 3",
-            is_active: 1,
-            account: {
-              id: 2,
-              name: "Account 2"
-            },
-            project_manager: [
-              {
-                first_name: "Manager 2a",
-                last_name: "Last 2a"
-              },
-              {
-                first_name: "Manager 2b",
-                last_name: "Last 2b"
-              }
-            ]
-          }
-        ]
-      }
-    };
+    this.projectsList();
+    this.createAddForm();
+    this.setEditForm();
+  }
 
-    this.projects = res.data.projects;
+  /* Create add project form */
+  createAddForm() {
+    this.addForm = this.fb.group({
+      name: ['', [Validators.required]],
+      accountId: ['', [Validators.required]],
+      isActive: [true]
+    });
+  }
 
+  /* Create add project form */
+  createEditForm() {
+    this.addForm = this.fb.group({
+      name: ['', [Validators.required]],
+      accountId: ['', [Validators.required]],
+      isActive: [true]
+    });
+  }
+
+  log() {
+    console.log(this.addForm.controls);
+  }
+
+  /* Check if input field is invalid */
+  isInvalid(field): boolean {
+
+    let state = this.addForm.controls[field].invalid && 
+    (this.addForm.controls[field].dirty || this.addForm.controls[field].touched);
+
+    return state;
+  }
+
+  /* Projects listing */
+  projectsList() {
+
+    let conditions = [];
+
+    this.projectService
+        .getProjects(conditions)
+        .subscribe(resp => {
+          this.projects = resp;
+        });
+
+    this.projectService
+        .getAccountsDropdown()
+        .subscribe(resp => {
+          this.all_accounts = resp;
+          // console.log("Account service:", resp);
+        });
+  }
+
+  addProject() {
+    let project = this.addForm.value;
+    project.isActive = project.isActive == "true" ? true : false;
+    console.log(project);
+
+    this.projectService
+        .addProject(this.addForm.value)
+        .subscribe(resp => {
+          console.log(resp);
+          this.addForm.reset({
+            name: '',
+            accountId: '',
+            isActive: true
+          });
+          this.projectsList();
+
+          swal({
+            title: "Success!",
+            text: "Project added successfully.",
+            type: 'success',
+            showConfirmButton: true     
+          });
+        });
+  }
+
+  openEditModal(template: TemplateRef<any>, project) {
+    this.modalRef = this.modalService.show(template);
+    this.editForm.patchValue({
+      name: project.name,
+      account_id: project.account.id,
+      is_active: project.is_active
+    });
+  }
+
+  setEditForm() {
+    this.editForm = this.fb.group({
+      name: ['', Validators.required],
+      account_id: ['', Validators.required],
+      is_active: ['']
+    });
   }
 
 }

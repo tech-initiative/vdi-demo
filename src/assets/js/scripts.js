@@ -30,7 +30,7 @@
     $(".scrollbar1").getNiceScroll();
     if ($('nav.gn-menu-wrapper').hasClass('scrollbar1-collapsed')) {
         $(".scrollbar1").getNiceScroll().hide();
-    }
+    }    
 
 })(jQuery);
 

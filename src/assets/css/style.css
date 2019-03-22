@@ -2450,6 +2450,10 @@ ul.dropdown-menu li.user-drp {
     font-weight: 500;
 }
 
+.mt-15 {
+	margin-top: 15px;
+}
+
 /*--Responsive--*/
 @media (max-width:1440px){
 	.registration.admin_agile {
