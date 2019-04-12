@@ -1199,6 +1199,9 @@ h2.w3_inner_tittle {
 .mb40 {
     margin-bottom: 40px !important;
 }
+.ml10 {
+    margin-left: 10px !important;
+}
 .sub_agile.mtn p.mb15 code {
     padding: 0;
     background: none;
@@ -2452,6 +2455,14 @@ ul.dropdown-menu li.user-drp {
 
 .mt-15 {
 	margin-top: 15px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.modal-header {
+	padding: 10px 15px 30px 15px;
 }
 
 /*--Responsive--*/

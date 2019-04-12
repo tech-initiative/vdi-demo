@@ -1,6 +1,5 @@
 <div class="inner_content">
   <div class="inner_content_w3_agile_info two_in">
-    <h2 class="w3_inner_tittle">Tables</h2>
     <div class="agile-tables">
       <div class="w3l-table-info agile_info_shadow">
         <div class="row">
@@ -21,8 +20,8 @@
                   <td>{{ project.name }}</td>
                   <td>{{ project.account.name }}</td>
                   <td class="text-center">
-                    <i class="fa fa-circle text-success" *ngIf="project.status"></i>
-                    <i class="fa fa-circle text-danger" *ngIf="!project.status"></i> 
+                    <i class="fa fa-circle text-success" *ngIf="project.isActive"></i>
+                    <i class="fa fa-circle text-danger" *ngIf="!project.isActive"></i> 
                   </td>
                   <td>
                     <span *ngFor="let pm of project.project_manager; let isLast = last;">
@@ -33,10 +32,10 @@
                     <a href="javascript:void(0);" class="btn btn-default btn-xs" (click)="openEditModal(template, project)">
                       <i class="fa fa-pencil"></i> Edit
                     </a>&nbsp;
-                    <a class="btn btn-default btn-xs">
+                    <a class="btn btn-default btn-xs" (click)="openDeleteConfirm(project)">
                       <i class="fa fa-trash"></i> Delete
                     </a>&nbsp;
-                    <a class="btn btn-default btn-xs">
+                    <a class="btn btn-default btn-xs" (click)="openSnapModal(templateSnap, project)">
                       <i class="fa fa-list"></i> Snap
                     </a>
                   </td>
@@ -49,29 +48,62 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form [formGroup]="editForm">
-                        <div class="form-group">
-                          <input type="text" class="form-control" formControlName="name" #name>
+                      <form [formGroup]="editForm" (ngSubmit)="editProject()">
+                        <input type="hidden" class="form-control" formControlName="id" #id>                        
+                        <div class="form-group mb-10">
+                          <label class="">Project Name</label>
+                          <input type="text" class="form-control" formControlName="name" #name
+                            [ngClass]="{'input-text-err': isInvalid('name')}"
+                          />
+                          <div *ngIf="isInvalid('name')">
+                            <span class="text-danger" *ngIf="editForm.controls['name'].errors?.required">Project name is required.</span>
+                          </div>
                         </div>
                         <div class="form-group">
-                          <select class="form-control" formControlName="account_id" #account_id>
+                            <label class="">Account</label>
+                          <select class="form-control" formControlName="accountId" #accountId
+                            [ngClass]="{'input-text-err': isInvalid('accountId')}" 
+                          >
                             <option value="">Select account</option>
-                            <option value="1">Account 1</option>
-                            <option value="2">Account 2</option>
-                            <option value="3">Account 3</option>
+                            <option *ngFor="let account of all_accounts" value="{{account.accId}}">
+                              {{ account.name }}
+                            </option>
                           </select>
+                          <div *ngIf="isInvalid('accountId')">                  
+                            <span class="text-danger" *ngIf="editForm.controls['accountId'].errors?.required">Account is required.</span>
+                          </div>
                         </div>
                         <div class="form-group">
-                          <select class="form-control" formControlName="is_active" #is_active>
+                          <label class="control-label">Status</label>
+                          <select class="form-control" formControlName="isActive" #isActive>
                             <option value="">Select status</option>
                             <option value="0">Inactive</option>
                             <option value="1">Active</option>
                           </select>
                         </div>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-xs btn-info mt-15 pull-right"
+                              [disabled]="btnDisabled || editForm.invalid"
+                          >Submit</button>
+                        </div>
+                        <div class="clearfix"></div>
                       </form>
                     </div>
                   </ng-template>
                   <!-- Edit modal ends -->
+                  <!-- Snap modal starts -->
+                  <ng-template #templateSnap>
+                    <div class="modal-header">
+                      <h4 class="modal-title pull-left">Project Snapshot</h4>
+                      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Snap data coming soon!
+                    </div>
+                  </ng-template>
+                  <!-- Snap modal ends -->
                 </tr>
               </tbody>
             </table>

@@ -2,27 +2,32 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { AdminuserComponent } from './adminuser/adminuser.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { ProjectsService } from './projects/projects.service';
-import { ProjectsComponent } from './projects/projects.component';
+import { UsersService } from './users/users.service';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AdminuserComponent } from './adminuser/adminuser.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AdminRoutingModule,
     ReactiveFormsModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    NgSelectModule
   ],
   providers: [
-    ProjectsService
+    ProjectsService,
+    UsersService
   ],
   declarations: [
     AdminuserComponent, 
-    ProjectsComponent
+    ProjectsComponent, 
+    UsersComponent
   ]
 })
 export class AdminModule { 

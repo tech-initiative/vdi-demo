@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminuserComponent }  from './adminuser/adminuser.component';
 import { ProjectsComponent }  from './projects/projects.component';
+import { UsersComponent }  from './users/users.component';
 import { AuthGuard } from '../auth/auth.guard';
 
 const subRoutes: Routes = [
@@ -13,6 +14,11 @@ const subRoutes: Routes = [
     { 
 	    path: 'projects',
         component: ProjectsComponent,
+        canActivate: [AuthGuard]
+    },
+    { 
+	    path: 'users',
+        component: UsersComponent,
         canActivate: [AuthGuard]
 	}	
 ];

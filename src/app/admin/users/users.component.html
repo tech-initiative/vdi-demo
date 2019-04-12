@@ -1,0 +1,189 @@
+<div class="inner_content">
+  <div class="inner_content_w3_agile_info two_in">
+    <div class="agile-tables">
+      <div class="w3l-table-info agile_info_shadow">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 class="w3_inner_tittle two">All Users</h3>
+            <table class="table table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                  <th width="8%">TCS ID</th>
+                  <th width="8%">Client ID</th>
+                  <th width="20%">Name</th>
+                  <th width="10%">Status</th>
+                  <th width="10%">Location</th>
+                  <th width="10%">Account Manager</th>
+                  <th width="10%">Project Manager</th>
+                  <th width="24%" class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users">
+                  <td>{{ user.tcsEmployeeId }}</td>
+                  <td>{{ user.clientId }}</td>
+                  <td>{{ user.firstName }} {{ user.lastName }}</td>
+                  <td class="text-center">
+                    <i class="fa fa-circle text-success" *ngIf="user.isActive"></i>
+                    <i class="fa fa-circle text-danger" *ngIf="!user.isActive"></i> 
+                  </td>
+                  <td>{{ user.location.name }}</td>
+                  <td>{{ user.isAccountManager ? 'Yes' : 'No' }}</td>
+                  <td>{{ user.isProjectManager ? 'Yes' : 'No' }}</td>
+                  <td class="actions text-center">
+                    <a href="javascript:void(0);" class="btn btn-default btn-xs" >
+                      <i class="fa fa-pencil"></i> Edit
+                    </a>&nbsp;
+                    <a class="btn btn-default btn-xs">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>&nbsp;
+                    <a class="btn btn-default btn-xs">
+                      <i class="fa fa-list"></i> Snap
+                    </a>
+                  </td>                  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-4">
+            <h3 class="w3_inner_tittle two">Add New User</h3>
+            <form [formGroup]="addForm" (ngSubmit)="addUser()">
+              {{ addForm.value | json }}
+              <div class="form-group">
+                <label class="">First Name</label>
+                <input class="form-control" placeholder="First Name"
+                  [ngClass]="{'input-text-err': isInvalid('firstName')}"
+                  formControlName="firstName" #firstName />
+                  <div *ngIf="isInvalid('firstName')">
+                    <span class="text-danger" *ngIf="addForm.controls['firstName'].errors?.required">First name is required.</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="">Last Name</label>
+                <input class="form-control" placeholder="Last Name"
+                  [ngClass]="{'input-text-err': isInvalid('lastName')}"
+                  formControlName="lastName" #lastName />
+                  <div *ngIf="isInvalid('lastName')">
+                    <span class="text-danger" *ngIf="addForm.controls['lastName'].errors?.required">Last name is required.</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="">Email</label>
+                <input class="form-control" placeholder="Email"
+                  [ngClass]="{'input-text-err': isInvalid('email')}"
+                  formControlName="email" #email />
+                  <div *ngIf="isInvalid('email')">
+                    <span class="text-danger" *ngIf="addForm.controls['email'].errors?.required">Email is required.</span>
+                    <span class="text-danger" *ngIf="addForm.controls['email'].errors?.email">Email format is invalid.</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="">Tcs Employee ID</label>
+                    <input class="form-control" placeholder="Tcs Employee ID"
+                      [ngClass]="{'input-text-err': isInvalid('tcsEmployeeId')}"
+                      formControlName="tcsEmployeeId" #tcsEmployeeId />
+                    <div *ngIf="isInvalid('tcsEmployeeId')">
+                      <span class="text-danger" *ngIf="addForm.controls['tcsEmployeeId'].errors?.required">Tcs Employee ID is required.</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label class="">Client ID</label>
+                      <input class="form-control" placeholder="Client ID"
+                        [ngClass]="{'input-text-err': isInvalid('clientId')}"
+                        formControlName="clientId" #clientId />
+                      <div *ngIf="isInvalid('clientId')">                          
+                        <span class="text-danger" *ngIf="addForm.controls['clientId'].errors?.required">Client ID is required.</span>
+                      </div>
+                  </div>
+                </div>
+              </div>   
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Seat</label>
+                    <select class="form-control" formControlName="seatId" #seatId>
+                      <option value="">Select Seat</option>
+                      <option *ngFor="let seat of seats" value="{{seat.id}}">{{seat.name}}</option>                        
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Location</label>
+                    <select class="form-control" formControlName="locationId" #locationId>
+                      <option value="">Select Location</option>
+                      <option *ngFor="let location of locations" value="{{location.id}}">{{location.name}}</option>                        
+                    </select>
+                  </div>
+                </div>                
+              </div>
+
+              <div class="form-group">
+                <label class="">Is Account Manager?</label>
+                <input type="radio" [value]="true" class="ml10"
+                  [ngClass]="{'input-text-err': isInvalid('isAccountManager')}"
+                  formControlName="isAccountManager" #isAccountManager />
+                <label>Yes</label>
+                <input type="radio" [value]="false" class="ml10"
+                  [ngClass]="{'input-text-err': isInvalid('isAccountManager')}"
+                  formControlName="isAccountManager" #isAccountManager />
+                <label>No</label>
+              </div>  
+              <div class="form-group" [hidden]="!addForm.value.isAccountManager">
+                <ng-select class="custom" 
+                        [multiple]="true"
+                        [items]="all_accounts"
+                        bindLabel="name"                      
+                        bindValue="accId"
+                        formControlName="accountIds">
+                </ng-select>
+              </div>
+              <div class="form-group">
+                <label class="">Is Project Manager?</label>
+                <input type="radio" [value]="true" class="ml10"
+                  [ngClass]="{'input-text-err': isInvalid('isProjectManager')}"
+                  formControlName="isProjectManager" #isProjectManager />
+                <label>Yes</label>
+                <input type="radio" [value]="false" class="ml10"
+                  [ngClass]="{'input-text-err': isInvalid('isProjectManager')}"
+                  formControlName="isProjectManager" #isProjectManager />
+                <label>No</label>
+                <div *ngIf="isInvalid('isProjectManager')">
+                  <span class="text-danger" *ngIf="addForm.controls['isProjectManager'].errors?.required">Select option.</span>
+                </div>
+              </div>
+              <div class="form-group" [hidden]="!addForm.value.isProjectManager">
+                  <ng-select  
+                    [multiple]="true"
+                    [items]="all_projects"
+                    bindLabel="name"                      
+                    bindValue="projectId"
+                    formControlName="projectIds">
+                  </ng-select>
+              </div>
+              <div class="form-group">
+                <label class="">Is Admin?</label>
+                <input type="radio" [value]="true" class="ml10"
+                  [ngClass]="{'input-text-err': isInvalid('isAdmin')}"
+                  formControlName="isAdmin" #isAdmin />
+                <label>Yes</label>
+                <input type="radio" [value]="false" class="ml10"
+                  [ngClass]="{'input-text-err': isInvalid('isAdmin')}"
+                  formControlName="isAdmin" #isAdmin />
+                <label>No</label>
+                <div *ngIf="isInvalid('isAdmin')">
+                  <span class="text-danger" *ngIf="addForm.controls['isAdmin'].errors?.required">Select option.</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" [disabled]="btnDisabled || addForm.invalid" 
+                  class="btn btn-xs btn-info mt-15 pull-right">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>       
+      </div>
+    </div>
+  </div>
+</div>

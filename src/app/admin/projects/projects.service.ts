@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { AppSettings } from '../../app.settings';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -68,8 +68,59 @@ export class ProjectsService {
         console.log(e);
         return of(e);
       })
-    )
+    );
+  }
 
-    // return of({status: 1, msg: 'Success'});
+  /* Edit project to DB */
+  editProject(project) { 
+
+    project.status = 1;
+    project.accountId = parseInt(project.accountId);
+    
+    console.log('Edit project service:', project); 
+
+    return this.http.put(
+      AppSettings.API_ENDPOINT+'projects/'+project.id, project
+    ).pipe(
+      tap(
+        (resp: any) => {
+          console.log('Success resp for edit project service:', resp);
+        }
+      ),
+      catchError((e: any) => {
+        console.log(e);
+        return of(e);
+      })
+    );
+  }
+
+  /* Delete project from DB */
+  deleteProject(id) { 
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        accountId: 999,
+        isActive: true,
+        status: 1
+      }
+    };
+
+    return this.http.delete(
+      AppSettings.API_ENDPOINT+'projects/'+id, 
+      options
+    ).pipe(
+      tap(
+        (resp: any) => {
+          console.log('Success resp for delete project service:', resp);
+        }
+      ),
+      catchError((e: any) => {
+        console.log("Error: ", e);
+        return of(e);
+      })
+    );
   }
 }

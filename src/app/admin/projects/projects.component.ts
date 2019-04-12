@@ -12,13 +12,13 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class ProjectsComponent implements OnInit {
 
-  public all_accounts: any;
-  public projects: any;
+  all_accounts: any;
+  projects: any;
 
-  public btnDisabled: boolean = false;
-  public invalidAttempt: boolean = false;
-  public addForm: FormGroup;
-  public editForm: FormGroup;
+  btnDisabled: boolean = false;
+  invalidAttempt: boolean = false;
+  addForm: FormGroup;
+  editForm: FormGroup;
   modalRef: BsModalRef;
 
   constructor(
@@ -43,15 +43,17 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  /* Create add project form */
-  createEditForm() {
-    this.addForm = this.fb.group({
-      name: ['', [Validators.required]],
-      accountId: ['', [Validators.required]],
-      isActive: [true]
+  /* Create edit project form initially */
+  setEditForm() {
+    this.editForm = this.fb.group({
+      id: [''],
+      name: ['', Validators.required],
+      accountId: ['', Validators.required],
+      isActive: ['']
     });
   }
 
+  /* Log message for debugging purpose */
   log() {
     console.log(this.addForm.controls);
   }
@@ -65,7 +67,7 @@ export class ProjectsComponent implements OnInit {
     return state;
   }
 
-  /* Projects listing */
+  /* I. Service call made for Projects listing */
   projectsList() {
 
     let conditions = [];
@@ -84,10 +86,11 @@ export class ProjectsComponent implements OnInit {
         });
   }
 
+  /* II. Service call made for Add Project */
   addProject() {
     let project = this.addForm.value;
-    project.isActive = project.isActive == "true" ? true : false;
-    console.log(project);
+    // project.isActive = project.isActive == "true" ? true : false;
+    console.log("Add project data: ", project);
 
     this.projectService
         .addProject(this.addForm.value)
@@ -103,27 +106,80 @@ export class ProjectsComponent implements OnInit {
           swal({
             title: "Success!",
             text: "Project added successfully.",
-            type: 'success',
+            // type: 'success',
             showConfirmButton: true     
           });
         });
   }
 
+  /* When edit button is clicked, open respective row data in edit modal */
   openEditModal(template: TemplateRef<any>, project) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'modal-sm' })
+    );
+    
     this.editForm.patchValue({
+      id: project.projectId,
       name: project.name,
-      account_id: project.account.id,
-      is_active: project.is_active
+      accountId: project.accountId,
+      isActive: project.isActive ? "1" : "0"
     });
   }
 
-  setEditForm() {
-    this.editForm = this.fb.group({
-      name: ['', Validators.required],
-      account_id: ['', Validators.required],
-      is_active: ['']
+  /* When edit button is clicked, open respective row data in edit modal */
+  openSnapModal(template: TemplateRef<any>, project) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'modal-lg' })
+    );
+    
+    console.log("Snapshot of project: ", project);
+  }
+
+  /* III. Service call made for Edit Project */
+  editProject() {
+    let project = this.editForm.value;
+    project.isActive = project.isActive == "1" ? true : false;
+
+    this.projectService
+        .editProject(project)
+        .subscribe(resp => {
+          console.log(resp);
+          this.projectsList();
+          this.modalRef.hide();
+          swal({
+            title: "Success!",
+            text: "Project edited successfully.",
+            // type: 'success',
+            showConfirmButton: true     
+          });
+        });
+
+    console.log("Edit project data: ", project);
+  }
+  
+  /* Delete confirm pop up */
+  openDeleteConfirm(project) {
+    swal({
+      title: "Are you sure?",
+      text: `All data associated with ${project.name} project will be lost.`,
+      showCancelButton: true  
+    }).then((sel_opt) => {
+      if (sel_opt.hasOwnProperty('value') && sel_opt.value) {
+        this.deleteProject(project.projectId);
+        this.projects = this.projects.filter((v) => {
+          return v.projectId != project.projectId;
+        });
+      } else {
+        // console.log("Delete option cancelled!");
+      }
     });
+  }
+
+  /* IV. Service call made for Delete Project */
+  deleteProject(id) {
+    return this.projectService.deleteProject(id).subscribe();
   }
 
 }
